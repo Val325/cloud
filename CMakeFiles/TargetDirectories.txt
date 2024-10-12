@@ -1,0 +1,4 @@
+/home/ghost/progects/opengl/cloud2/CMakeFiles/glad.dir
+/home/ghost/progects/opengl/cloud2/CMakeFiles/cloud.dir
+/home/ghost/progects/opengl/cloud2/CMakeFiles/edit_cache.dir
+/home/ghost/progects/opengl/cloud2/CMakeFiles/rebuild_cache.dir
