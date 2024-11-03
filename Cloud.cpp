@@ -41,6 +41,10 @@ float lastFrame = 0.0f;
 // lighting
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
+int amountPoints = 200;
+std::vector<glm::vec3> positionPoint;
+glm::vec3 positionCloud;
+
 float RandomNumber(float Min, float Max)
 {
     return ((float(rand()) / float(RAND_MAX)) * (Max - Min)) + Min;
@@ -190,7 +194,21 @@ int main()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     
+    
+    for (int i = 0; i < amountPoints;i++){
+        float x = RandomNumber(-1, 1);
+        float y = RandomNumber(-1, 1);
+        float z = RandomNumber(-1, 1);
 
+        glm::vec3 onePos;
+        onePos.x = x;
+        onePos.y = y;
+        onePos.z = z;
+        positionPoint.push_back(onePos);
+    }
+    positionCloud.x = 0;
+    positionCloud.y = 0;
+    positionCloud.z = 0;
 
     // render loop
     // -----------
@@ -260,8 +278,19 @@ int main()
         //int y = 0;
         float stepy = 0.05f;
 
-
-        int totalPoints = 2000;
+        for (int i = 0; i < amountPoints;i++){
+            glm::vec3 posCloud = positionPoint[i];
+            if ( sqrt((posCloud.x*posCloud.x) + (posCloud.y*posCloud.y) + (posCloud.z*posCloud.z)) <= 1 ) 
+            {
+                cloudShader.setVec3("positionCloud", posCloud);
+                //model = glm::translate(model, posCloud);
+                cloudShader.setMat4("model", model);
+                glDrawArrays(GL_TRIANGLES, 0, 12);
+            }
+            
+        }
+        /*
+        int totalPoints = 20000;
         int current_points = 0;
         while (current_points <= totalPoints) {
             float x = RandomNumber(-1, 1);
@@ -279,7 +308,7 @@ int main()
                 break;
             }
         } 
-        /* 
+        
         for (int x = 0; x < cloudParticleX; x++){
             model = glm::translate(model, glm::vec3(x*stepXhorizontal, 0.0f, 0.0f));
             cloudShader.setMat4("model", model);
